@@ -196,10 +196,13 @@ app.use((err, req, res, _next) => {
 initializeDatabase()
   .then(() => {
     app.listen(PORT, () => {
+      // Render sets RENDER_EXTERNAL_URL automatically in production.
+      // Falls back to localhost for local development.
+      const baseUrl = process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`;
       console.log(`\n════════════════════════════════════════════════════`);
       console.log(`✓ Smokeyz BBQ Server Running`);
-      console.log(`✓ PORT: ${PORT}`);
-      console.log(`✓ Admin path: ${ADMIN_PATH}`);
+      console.log(`✓ URL: ${baseUrl}`);
+      console.log(`✓ Admin: ${baseUrl}${ADMIN_PATH}`);
       console.log(`✓ Environment: ${process.env.NODE_ENV || 'development'}`);
       console.log(`✓ Database: ${process.env.DATABASE_URL || '(default path)'}`);
       console.log(`════════════════════════════════════════════════════\n`);
