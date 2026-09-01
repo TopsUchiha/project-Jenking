@@ -20,7 +20,7 @@
   "author": "Smokeyz BBQ",
   "license": "MIT",
   "dependencies": {
-    "@sendgrid/mail": "^7.7.0",
+    "@sendgrid/mail": "^8.1.6",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.6",
@@ -32,7 +32,7 @@
     "jsonwebtoken": "^9.0.2",
     "paypal-rest-sdk": "^1.8.1",
     "sharp": "^0.35.4",
-    "sqlite3": "^5.1.6",
+    "sqlite3": "^6.0.1",
     "stripe": "^14.7.0"
   },
   "devDependencies": {
