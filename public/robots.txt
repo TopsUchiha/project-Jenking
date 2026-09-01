@@ -1,0 +1,26 @@
+# Smokeyz BBQ - Robot Rules
+User-agent: *
+Allow: /
+Disallow: /admin-portal
+Disallow: /api/
+Disallow: /.env
+Disallow: /node_modules/
+Disallow: /database.db
+
+# Sitemaps
+Sitemap: https://bbqsmokerz.com/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1
+
+# Google Bot
+User-agent: Googlebot
+Allow: /
+Disallow: /admin-portal
+Disallow: /api/
+
+# Bing Bot
+User-agent: Bingbot
+Allow: /
+Disallow: /admin-portal
+Disallow: /api/

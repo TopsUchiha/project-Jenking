@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin | Smokeyz BBQ</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/admin-style.css">
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-wrap" id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">Smokeyz<span>BBQ</span></div>
+    <p class="login-sub">Admin Dashboard</p>
+    <div id="loginMsg" class="form-msg"></div>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" required autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block" id="loginBtn">Log In</button>
+    </form>
+  </div>
+</div>
+
+<!-- DASHBOARD (hidden until authenticated) -->
+<div class="admin-layout" id="dashboardScreen" style="display:none;">
+  <aside class="sidebar">
+    <div class="sidebar-logo">Smokeyz<span>BBQ</span></div>
+    <nav class="sidebar-nav">
+      <button data-view="dashboard" class="active">Dashboard</button>
+      <button data-view="products">Products</button>
+      <button data-view="orders">Orders</button>
+      <button data-view="customers">Customers</button>
+      <button data-view="inventory">Inventory</button>
+      <button data-view="payment-methods">Payment Methods</button>
+      <button data-view="messages">Messages</button>
+      <button data-view="shipping">Shipping &amp; Tax</button>
+    </nav>
+    <div class="sidebar-footer">
+      <button id="logoutBtn">Log Out</button>
+    </div>
+  </aside>
+
+  <main class="main-content" id="mainContent">
+    <!-- populated by admin-app.js -->
+  </main>
+</div>
+
+<!-- MODAL (shared, used by product editor / send-payment-link / inventory adjust) -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">Title</h3>
+      <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script src="/admin-app.js"></script>
+</body>
+</html>

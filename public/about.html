@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us | Smokeyz BBQ</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav">
+    <a href="/" class="nav-logo">Smokeyz<span>BBQ</span></a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/products">Smokers</a>
+      <a href="/about" class="active">About</a>
+      <a href="/contact">Contact</a>
+      <a href="/account">Track Order</a>
+    </div>
+    <div style="display:flex; align-items:center; gap:1rem;">
+      <a href="/cart" class="nav-cart" aria-label="View cart">🛒 <span class="cart-badge" style="display:none;">0</span></a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    </div>
+  </nav>
+  <div class="mobile-menu">
+    <a href="/">Home</a><a href="/products">Smokers</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/account">Track Order</a>
+  </div>
+</header>
+
+<main>
+<section>
+  <div class="container" style="max-width:760px;">
+    <h1 style="margin-bottom:1.5rem;">About Smokeyz BBQ</h1>
+    <p style="color:var(--gray-600); font-size:1.0625rem; margin-bottom:1.25rem;">Smokeyz BBQ builds custom smokers out of Freeport, Texas. Every unit, whether it's an offset, barrel, pellet, hybrid, or kettle design, is fabricated to order rather than pulled off a factory line.</p>
+    <p style="color:var(--gray-600); font-size:1.0625rem; margin-bottom:1.25rem;">We work directly with each customer on sizing, wood selection, finish, and hardware, so the smoker that arrives is built around how you actually cook, not a generic template.</p>
+    <p style="color:var(--gray-600); font-size:1.0625rem;">Have questions about a custom build? <a href="/contact" style="color:var(--copper); font-weight:600;">Reach out</a> and we'll walk you through the options.</p>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom"><p>&copy; <span id="year"></span> Smokeyz BBQ. All rights reserved.</p></div>
+  </div>
+</footer>
+<script src="/app.js"></script>
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

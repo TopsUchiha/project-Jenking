@@ -1,0 +1,109 @@
+{
+  "name": "Smokeyz BBQ",
+  "version": 2,
+  "public": true,
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "env": {
+    "NODE_ENV": {
+      "description": "Environment (production or development)",
+      "value": "production",
+      "required": true
+    },
+    "DATABASE_URL": {
+      "description": "Path to SQLite database",
+      "value": "./database.db",
+      "required": false
+    },
+    "JWT_SECRET": {
+      "description": "JWT secret key (at least 32 characters)",
+      "value": "",
+      "required": true
+    },
+    "ADMIN_EMAIL": {
+      "description": "Admin login email",
+      "value": "smokersandgrillsb@gmail.com",
+      "required": true
+    },
+    "ADMIN_PASSWORD": {
+      "description": "Admin login password",
+      "value": "",
+      "required": true
+    },
+    "SENDGRID_API_KEY": {
+      "description": "SendGrid API key for emails",
+      "value": "",
+      "required": false
+    },
+    "SENDER_EMAIL": {
+      "description": "Email address to send from",
+      "value": "noreply@bbqsmokerz.com",
+      "required": false
+    },
+    "BUSINESS_EMAIL": {
+      "description": "Business email for contact",
+      "value": "smokersandgrillsb@gmail.com",
+      "required": false
+    },
+    "BUSINESS_PHONE": {
+      "description": "Business phone number",
+      "value": "+1 (917) 543-0678",
+      "required": false
+    }
+  },
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": [
+          "public/**",
+          "config/**",
+          "routes/**",
+          "scripts/**",
+          "database.db"
+        ]
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/public/(.*)",
+      "dest": "/public/$1",
+      "headers": {
+        "Cache-Control": "public, max-age=3600, s-maxage=86400"
+      }
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/server.js"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains; preload"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    }
+  ]
+}

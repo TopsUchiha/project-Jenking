@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout | Smokeyz BBQ</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+<style>
+.checkout-wrap { display:grid; grid-template-columns:1fr; gap:2.5rem; }
+@media (min-width:900px) { .checkout-wrap { grid-template-columns:2fr 1fr; } }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav">
+    <a href="/" class="nav-logo">Smokeyz<span>BBQ</span></a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/products">Smokers</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="/account">Track Order</a>
+    </div>
+    <div style="display:flex; align-items:center; gap:1rem;">
+      <a href="/cart" class="nav-cart" aria-label="View cart">
+        🛒 <span class="cart-badge" style="display:none;">0</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    </div>
+  </nav>
+  <div class="mobile-menu">
+    <a href="/">Home</a>
+    <a href="/products">Smokers</a>
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+    <a href="/account">Track Order</a>
+  </div>
+</header>
+
+<main id="main">
+<section>
+  <div class="container">
+    <h1 style="font-size:2rem; margin-bottom:2rem;">Checkout</h1>
+    <div id="formMsg" class="form-msg"></div>
+    <div class="checkout-wrap" id="checkoutWrap">
+      <!-- populated by JS -->
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <p>&copy; <span id="year"></span> Smokeyz BBQ. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="/app.js"></script>
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+var TAX_RATE = 0.0825;
+var SHIPPING_FLAT = 149.00;
+
+function buildCheckoutForm() {
+  var items = getCart();
+  var wrap = document.getElementById('checkoutWrap');
+
+  if (items.length === 0) {
+    wrap.innerHTML = '<div class="empty-state" style="grid-column:1/-1;">'
+      + '<h3>Your cart is empty</h3>'
+      + '<a href="/products" class="btn btn-primary mt-lg">Browse Smokers</a>'
+      + '</div>';
+    return;
+  }
+
+  var subtotal = cartSubtotal();
+  var tax = subtotal * TAX_RATE;
+  var shipping = SHIPPING_FLAT;
+  var total = subtotal + tax + shipping;
+
+  var itemsSummary = items.map(function (item) {
+    return '<div class="summary-row"><span>' + esc(item.name) + ' &times;' + item.quantity + '</span><span>' + money(item.price * item.quantity) + '</span></div>';
+  }).join('');
+
+  wrap.innerHTML =
+    '<form id="checkoutForm" novalidate>'
+    + '<h3 style="margin-bottom:1.25rem;">Contact &amp; Shipping Info</h3>'
+    + '<div class="form-group"><label for="full_name">Full Name</label><input type="text" id="full_name" required minlength="2" maxlength="150"><p class="field-error">Please enter your full name.</p></div>'
+    + '<div class="form-row two-col">'
+    + '<div class="form-group"><label for="email">Email</label><input type="email" id="email" required maxlength="254"><p class="field-error">Please enter a valid email.</p></div>'
+    + '<div class="form-group"><label for="phone">Phone</label><input type="tel" id="phone" required minlength="7" maxlength="30"><p class="field-error">Please enter a valid phone number.</p></div>'
+    + '</div>'
+    + '<div class="form-group"><label for="address">Street Address</label><input type="text" id="address" required minlength="5" maxlength="300"><p class="field-error">Please enter your street address.</p></div>'
+    + '<div class="form-row two-col">'
+    + '<div class="form-group"><label for="city">City</label><input type="text" id="city" required maxlength="100"><p class="field-error">Please enter your city.</p></div>'
+    + '<div class="form-group"><label for="state">State</label><input type="text" id="state" required maxlength="100"><p class="field-error">Please enter your state.</p></div>'
+    + '</div>'
+    + '<div class="form-group" style="max-width:200px;"><label for="zip">ZIP Code</label><input type="text" id="zip" required minlength="3" maxlength="20"><p class="field-error">Please enter your ZIP code.</p></div>'
+    + '<button type="submit" class="btn btn-primary btn-block mt-lg" id="submitBtn">Place Order</button>'
+    + '<p style="color:var(--gray-600); font-size:0.8125rem; margin-top:0.75rem;">We will email an order confirmation, then follow up with a secure payment link.</p>'
+    + '</form>'
+    + '<div class="cart-summary">'
+    + '<h3 style="margin-bottom:1.25rem;">Order Summary</h3>'
+    + itemsSummary
+    + '<div class="summary-row" style="border-top:1px solid var(--gray-200); padding-top:0.75rem; margin-top:0.75rem;"><span>Subtotal</span><span>' + money(subtotal) + '</span></div>'
+    + '<div class="summary-row"><span>Estimated Tax</span><span>' + money(tax) + '</span></div>'
+    + '<div class="summary-row"><span>Shipping</span><span>' + money(shipping) + '</span></div>'
+    + '<div class="summary-row total"><span>Total</span><span>' + money(total) + '</span></div>'
+    + '</div>';
+
+  document.getElementById('checkoutForm').addEventListener('submit', handleSubmit);
+}
+
+async function handleSubmit(e) {
+  e.preventDefault();
+  var form = e.target;
+  clearAllFieldErrors(form);
+
+  var fields = {
+    full_name: document.getElementById('full_name'),
+    email: document.getElementById('email'),
+    phone: document.getElementById('phone'),
+    address: document.getElementById('address'),
+    city: document.getElementById('city'),
+    state: document.getElementById('state'),
+    zip: document.getElementById('zip')
+  };
+
+  var valid = true;
+  if (fields.full_name.value.trim().length < 2) { showFieldError('full_name', 'Please enter your full name.'); valid = false; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email.value.trim())) { showFieldError('email', 'Please enter a valid email.'); valid = false; }
+  if (fields.phone.value.trim().length < 7) { showFieldError('phone', 'Please enter a valid phone number.'); valid = false; }
+  if (fields.address.value.trim().length < 5) { showFieldError('address', 'Please enter your street address.'); valid = false; }
+  if (fields.city.value.trim().length < 2) { showFieldError('city', 'Please enter your city.'); valid = false; }
+  if (fields.state.value.trim().length < 2) { showFieldError('state', 'Please enter your state.'); valid = false; }
+  if (fields.zip.value.trim().length < 3) { showFieldError('zip', 'Please enter your ZIP code.'); valid = false; }
+
+  var msgEl = document.getElementById('formMsg');
+  if (!valid) {
+    showFormMessage(msgEl, 'Please fix the errors below.', 'error');
+    return;
+  }
+
+  var items = getCart();
+  var subtotal = cartSubtotal();
+  var tax = subtotal * TAX_RATE;
+  var shipping = SHIPPING_FLAT;
+
+  var submitBtn = document.getElementById('submitBtn');
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<span class="spinner"></span> Placing order...';
+
+  try {
+    var data = await apiPost('/api/orders', {
+      full_name: fields.full_name.value.trim(),
+      email: fields.email.value.trim(),
+      phone: fields.phone.value.trim(),
+      address: fields.address.value.trim(),
+      city: fields.city.value.trim(),
+      state: fields.state.value.trim(),
+      zip: fields.zip.value.trim(),
+      cart_items: items.map(function (i) {
+        return { product_id: i.product_id, quantity: i.quantity, customization_selections: i.customizations };
+      }),
+      subtotal: subtotal,
+      tax: tax,
+      shipping: shipping
+    });
+
+    clearCart();
+    window.location.href = '/order-confirmation?order_id=' + data.order_id;
+  } catch (err) {
+    showFormMessage(msgEl, err.message || 'Could not place order. Please try again.', 'error');
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Place Order';
+  }
+}
+
+buildCheckoutForm();
+</script>
+</body>
+</html>

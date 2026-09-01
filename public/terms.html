@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of Service | Smokeyz BBQ</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav">
+    <a href="/" class="nav-logo">Smokeyz<span>BBQ</span></a>
+    <div class="nav-links">
+      <a href="/">Home</a><a href="/products">Smokers</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/account">Track Order</a>
+    </div>
+    <div style="display:flex; align-items:center; gap:1rem;">
+      <a href="/cart" class="nav-cart" aria-label="View cart">🛒 <span class="cart-badge" style="display:none;">0</span></a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    </div>
+  </nav>
+  <div class="mobile-menu">
+    <a href="/">Home</a><a href="/products">Smokers</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/account">Track Order</a>
+  </div>
+</header>
+<main>
+<section>
+  <div class="container" style="max-width:760px;">
+    <h1 style="margin-bottom:1.5rem;">Terms of Service</h1>
+    <p style="color:var(--gray-600); margin-bottom:1rem;"><em>Last updated: <span id="today"></span></em></p>
+
+    <h3 style="margin:1.75rem 0 0.75rem;">Orders &amp; Custom Builds</h3>
+    <p style="color:var(--gray-600); margin-bottom:1rem;">All smokers are built to order. Placing an order through this website is a request for a custom build; it is not a final sale until payment is received. We will contact you to confirm specifications before sending a payment link.</p>
+
+    <h3 style="margin:1.75rem 0 0.75rem;">Pricing</h3>
+    <p style="color:var(--gray-600); margin-bottom:1rem;">Prices listed are subject to change until an order is confirmed and paid. Custom modifications may affect final pricing, which will be communicated before payment is requested.</p>
+
+    <h3 style="margin:1.75rem 0 0.75rem;">Payment</h3>
+    <p style="color:var(--gray-600); margin-bottom:1rem;">We accept multiple payment methods. Payment links are sent after order confirmation and expire after 30 days unless otherwise noted. Orders are not built or shipped until payment is confirmed.</p>
+
+    <h3 style="margin:1.75rem 0 0.75rem;">Shipping &amp; Lead Times</h3>
+    <p style="color:var(--gray-600); margin-bottom:1rem;">Custom builds take time. Estimated lead times will be provided at order confirmation. Shipping costs are calculated based on size and destination.</p>
+
+    <h3 style="margin:1.75rem 0 0.75rem;">Returns &amp; Cancellations</h3>
+    <p style="color:var(--gray-600); margin-bottom:1rem;">Because units are custom-built, orders may be cancelled without penalty before payment is made. Once payment is received and fabrication has begun, cancellations are handled on a case-by-case basis. Contact us directly to discuss any issue with your order.</p>
+
+    <h3 style="margin:1.75rem 0 0.75rem;">Contact</h3>
+    <p style="color:var(--gray-600);">Questions about these terms can be sent to smokersandgrillsb@gmail.com.</p>
+  </div>
+</section>
+</main>
+<footer class="site-footer">
+  <div class="container"><div class="footer-bottom"><p>&copy; <span id="year"></span> Smokeyz BBQ. All rights reserved.</p></div></div>
+</footer>
+<script src="/app.js"></script>
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+document.getElementById('today').textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+</script>
+</body>
+</html>

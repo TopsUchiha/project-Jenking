@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smokeyz BBQ | Custom-Built Smokers, Made to Order</title>
+<meta name="description" content="Handcrafted BBQ smokers built to your exact specifications. Barrel, pellet, offset, hybrid, and kettle smokers, custom sized and finished.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/logo.png" alt="Smokeyz BBQ Logo"></a>
+    <div class="nav-links">
+      <a href="/" class="active">Home</a>
+      <a href="/products">Smokers</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="/account">Track Order</a>
+    </div>
+    <div style="display:flex; align-items:center; gap:1rem;">
+      <a href="/cart" class="nav-cart" aria-label="View cart">
+        🛒 <span class="cart-badge" style="display:none;">0</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    </div>
+  </nav>
+  <div class="mobile-menu">
+    <a href="/">Home</a>
+    <a href="/products">Smokers</a>
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+    <a href="/account">Track Order</a>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero">
+  <canvas class="hero-canvas" id="smokeCanvas"></canvas>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Handbuilt in Texas</p>
+    <h1>Custom smokers built for people who take their barbecue seriously.</h1>
+    <p>Every unit is fabricated to order: barrel, offset, pellet, hybrid, or kettle, sized and finished exactly how you want it. No mass production, no shortcuts.</p>
+    <div class="hero-actions">
+      <a href="/products" class="btn btn-primary">Browse Smokers</a>
+      <a href="/contact" class="btn btn-outline" style="border-color:#fff; color:#fff;">Request a Custom Build</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <h2>Featured Builds</h2>
+      <p>A sample of what we build. Every smoker can be customized on size, wood, finish, and hardware.</p>
+    </div>
+    <div class="product-grid" id="featuredGrid">
+      <p style="text-align:center; color:#4b5563;">Loading featured smokers...</p>
+    </div>
+    <div class="text-center mt-xl">
+      <a href="/products" class="btn btn-outline">View All Smokers</a>
+    </div>
+  </div>
+</section>
+
+<section class="section-alt">
+  <div class="container">
+    <div class="section-head">
+      <h2>How It Works</h2>
+      <p>From order to delivery, here is exactly what happens.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-item">
+        <div class="step-number">1</div>
+        <h4>Choose &amp; Customize</h4>
+        <p>Pick a base model or request a custom size, wood type, and finish.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-number">2</div>
+        <h4>Order Confirmed</h4>
+        <p>Submit your order details. We review and confirm within 24 hours.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-number">3</div>
+        <h4>Secure Payment</h4>
+        <p>We send a payment link using your preferred method.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-number">4</div>
+        <h4>Built &amp; Shipped</h4>
+        <p>Your smoker is hand-built, inspected, and shipped to your door.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <h2>What Customers Say</h2>
+    </div>
+    <div class="testimonial-grid" id="reviewsGrid">
+      <p style="text-align:center; color:#4b5563; grid-column:1/-1;">Loading reviews...</p>
+    </div>
+  </div>
+</section>
+
+<section class="section-dark">
+  <div class="container text-center">
+    <h2>Ready to build your smoker?</h2>
+    <p style="color:#d1d5db; max-width:520px; margin:1rem auto 2rem;">Browse our current lineup or reach out with your custom specifications.</p>
+    <a href="/products" class="btn btn-primary">Browse Smokers</a>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">Smokeyz<span>BBQ</span></div>
+        <p style="max-width:320px;">Custom-built BBQ smokers, handcrafted to order. Barrel, offset, pellet, hybrid, and kettle designs.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="/about">About</a>
+        <a href="/products">Smokers</a>
+        <a href="/contact">Contact</a>
+        <a href="/account">Track an Order</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <p>2008 N Avenue H<br>Freeport, TX 77541</p>
+        <p>smokersandgrillsb@gmail.com</p>
+        <p>+1 (917) 543-0678</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span id="year"></span> Smokeyz BBQ. All rights reserved. &middot; <a href="/privacy-policy" style="color:#9ca3af;">Privacy Policy</a> &middot; <a href="/terms" style="color:#9ca3af;">Terms</a></p>
+    </div>
+  </div>
+</footer>
+
+<script src="/app.js"></script>
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// Hero smoke/flame canvas animation
+(function () {
+  var canvas = document.getElementById('smokeCanvas');
+  var ctx = canvas.getContext('2d');
+  var particles = [];
+
+  function resize() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function spawn() {
+    if (particles.length > 60) return;
+    particles.push({
+      x: canvas.width * (0.3 + Math.random() * 0.4),
+      y: canvas.height + 10,
+      r: 10 + Math.random() * 30,
+      speed: 0.3 + Math.random() * 0.6,
+      drift: (Math.random() - 0.5) * 0.5,
+      opacity: 0.15 + Math.random() * 0.15
+    });
+  }
+
+  function tick() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    spawn();
+    particles.forEach(function (p) {
+      p.y -= p.speed;
+      p.x += p.drift;
+      p.opacity -= 0.0009;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(180,180,180,' + Math.max(p.opacity, 0) + ')';
+      ctx.fill();
+    });
+    particles = particles.filter(function (p) { return p.opacity > 0 && p.y > -50; });
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+// Load featured products
+(async function loadFeatured() {
+  var grid = document.getElementById('featuredGrid');
+  try {
+    var data = await apiGet('/api/products');
+    var products = (data.products || []).slice(0, 4);
+    if (products.length === 0) {
+      grid.innerHTML = '<p style="text-align:center; color:#4b5563; grid-column:1/-1;">New smokers coming soon. Check back shortly.</p>';
+      return;
+    }
+    grid.innerHTML = products.map(function (p) {
+      var stockNote = p.inventory === 0 ? '<span class="stock-note out">Out of stock</span>'
+        : p.inventory <= 2 ? '<span class="stock-note low">Only ' + p.inventory + ' left</span>'
+        : '<span class="stock-note">In stock</span>';
+      return '<div class="product-card">'
+        + '<div class="product-card-img"><img src="' + esc(safeImg(p.image_url)) + '" alt="' + esc(p.name) + '" loading="lazy"></div>'
+        + '<div class="product-card-body">'
+        + '<span class="product-type-tag">' + esc(p.type) + '</span>'
+        + '<h3>' + esc(p.name) + '</h3>'
+        + '<p class="product-card-desc">' + esc(p.description.substring(0, 90)) + (p.description.length > 90 ? '...' : '') + '</p>'
+        + '<div class="product-price">' + money(p.price) + '</div>'
+        + stockNote
+        + '<div class="product-card-actions"><a href="/product-detail?id=' + p.id + '" class="btn btn-primary btn-block">View Details</a></div>'
+        + '</div></div>';
+    }).join('');
+  } catch (e) {
+    grid.innerHTML = '<p style="text-align:center; color:#4b5563; grid-column:1/-1;">Could not load products right now.</p>';
+  }
+})();
+
+// Load real customer reviews
+(async function loadReviews() {
+  var grid = document.getElementById('reviewsGrid');
+  try {
+    var data = await apiGet('/api/reviews');
+    var reviews = (data.reviews || []).filter(function (r) { return r.rating >= 4; }).slice(0, 6);
+    if (reviews.length === 0) {
+      grid.innerHTML = '';
+      grid.parentElement.parentElement.style.display = 'none'; // hide the whole section if no reviews yet
+      return;
+    }
+    grid.innerHTML = reviews.map(function (r) {
+      var stars = '&#9733;'.repeat(r.rating) + '&#9734;'.repeat(5 - r.rating);
+      return '<div class="testimonial-card">'
+        + '<div class="testimonial-quote-mark">&ldquo;</div>'
+        + '<p style="color:#c4622d; letter-spacing:2px; margin-bottom:0.5rem;">' + stars + '</p>'
+        + '<p class="testimonial-text">' + esc(r.text) + '</p>'
+        + '<p class="testimonial-author">' + esc(r.customer_name) + '</p>'
+        + '</div>';
+    }).join('');
+  } catch (e) {
+    grid.parentElement.parentElement.style.display = 'none'; // fail silently, don't show a broken section
+  }
+})();
+</script>
+</body>
+</html>

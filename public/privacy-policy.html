@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy | Smokeyz BBQ</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav">
+    <a href="/" class="nav-logo">Smokeyz<span>BBQ</span></a>
+    <div class="nav-links">
+      <a href="/">Home</a><a href="/products">Smokers</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/account">Track Order</a>
+    </div>
+    <div style="display:flex; align-items:center; gap:1rem;">
+      <a href="/cart" class="nav-cart" aria-label="View cart">🛒 <span class="cart-badge" style="display:none;">0</span></a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    </div>
+  </nav>
+  <div class="mobile-menu">
+    <a href="/">Home</a><a href="/products">Smokers</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/account">Track Order</a>
+  </div>
+</header>
+<main>
+<section>
+  <div class="container" style="max-width:760px;">
+    <h1 style="margin-bottom:1.5rem;">Privacy Policy</h1>
+    <p style="color:var(--gray-600); margin-bottom:1rem;"><em>Last updated: <span id="today"></span></em></p>
+
+    <h3 style="margin:1.75rem 0 0.75rem;">Information We Collect</h3>
+    <p style="color:var(--gray-600); margin-bottom:1rem;">When you place an order or contact us, we collect your name, email address, phone number, and shipping address. This information is used solely to process your order, communicate with you about your purchase, and provide customer support.</p>
+
+    <h3 style="margin:1.75rem 0 0.75rem;">How We Use Your Information</h3>
+    <p style="color:var(--gray-600); margin-bottom:1rem;">We use your information to fulfill orders, send order confirmations and payment links, respond to inquiries, and improve our products and service. We do not sell your personal information to third parties.</p>
+
+    <h3 style="margin:1.75rem 0 0.75rem;">Payment Information</h3>
+    <p style="color:var(--gray-600); margin-bottom:1rem;">We never store your card details. Card payments are processed directly by our payment partners (such as Stripe or PayPal), who maintain their own security standards. Other payment methods are handled manually between you and our team.</p>
+
+    <h3 style="margin:1.75rem 0 0.75rem;">Data Security</h3>
+    <p style="color:var(--gray-600); margin-bottom:1rem;">We use industry-standard security practices, including encrypted connections and secure data storage, to protect your information.</p>
+
+    <h3 style="margin:1.75rem 0 0.75rem;">Your Rights</h3>
+    <p style="color:var(--gray-600); margin-bottom:1rem;">You may request access to, correction of, or deletion of your personal data at any time by contacting us at smokersandgrillsb@gmail.com.</p>
+
+    <h3 style="margin:1.75rem 0 0.75rem;">Contact Us</h3>
+    <p style="color:var(--gray-600);">Questions about this policy can be sent to smokersandgrillsb@gmail.com or +1 (917) 543-0678.</p>
+  </div>
+</section>
+</main>
+<footer class="site-footer">
+  <div class="container"><div class="footer-bottom"><p>&copy; <span id="year"></span> Smokeyz BBQ. All rights reserved.</p></div></div>
+</footer>
+<script src="/app.js"></script>
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+document.getElementById('today').textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+</script>
+</body>
+</html>

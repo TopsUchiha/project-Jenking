@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: smokeyz-bbq
+    runtime: node
+    plan: starter          # required — Free plan cannot attach a disk
+    region: oregon          # change if you want a different region
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true          # Render generates a strong random secret for you
+      - key: SENDGRID_API_KEY
+        sync: false                  # you'll paste this in manually in the dashboard
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: DATABASE_URL
+        value: /var/data/database.db  # lives on the persistent disk below
+    disk:
+      name: smokeyz-data
+      mountPath: /var/data
+      sizeGB: 1

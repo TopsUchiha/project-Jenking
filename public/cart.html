@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Cart | Smokeyz BBQ</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+<style>
+.cart-wrap { display:grid; grid-template-columns:1fr; gap:2.5rem; }
+@media (min-width:900px) { .cart-wrap { grid-template-columns:2fr 1fr; } }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav">
+    <a href="/" class="nav-logo">Smokeyz<span>BBQ</span></a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/products">Smokers</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="/account">Track Order</a>
+    </div>
+    <div style="display:flex; align-items:center; gap:1rem;">
+      <a href="/cart" class="nav-cart active" aria-label="View cart">
+        🛒 <span class="cart-badge" style="display:none;">0</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    </div>
+  </nav>
+  <div class="mobile-menu">
+    <a href="/">Home</a>
+    <a href="/products">Smokers</a>
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+    <a href="/account">Track Order</a>
+  </div>
+</header>
+
+<main id="main">
+<section>
+  <div class="container">
+    <h1 style="font-size:2rem; margin-bottom:2rem;">Your Cart</h1>
+    <div class="cart-wrap" id="cartWrap">
+      <!-- populated by JS -->
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <p>&copy; <span id="year"></span> Smokeyz BBQ. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="/app.js"></script>
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+var TAX_RATE = 0.0825; // Texas state sales tax
+var SHIPPING_FLAT = 149.00;
+
+function renderCustomizations(c) {
+  if (!c) return '';
+  var parts = Object.keys(c).map(function (k) { return esc(k) + ': ' + esc(c[k]); });
+  return '<div class="cart-item-meta">' + parts.join(' &middot; ') + '</div>';
+}
+
+function renderCart() {
+  var items = getCart();
+  var wrap = document.getElementById('cartWrap');
+
+  if (items.length === 0) {
+    wrap.innerHTML = '<div class="empty-state" style="grid-column:1/-1;">'
+      + '<h3>Your cart is empty</h3>'
+      + '<p class="mt-lg">Browse our smokers to get started.</p>'
+      + '<a href="/products" class="btn btn-primary mt-lg">Browse Smokers</a>'
+      + '</div>';
+    return;
+  }
+
+  var itemsHTML = items.map(function (item, idx) {
+    return '<div class="cart-item">'
+      + '<div class="cart-item-img"><img src="' + esc(safeImg(item.image_url)) + '" alt="' + esc(item.name) + '"></div>'
+      + '<div>'
+      + '<div class="cart-item-name">' + esc(item.name) + '</div>'
+      + renderCustomizations(item.customizations)
+      + '<div class="cart-item-meta">' + money(item.price) + ' each</div>'
+      + '<div class="qty-control">'
+      + '<button class="qty-btn" data-action="dec" data-idx="' + idx + '" aria-label="Decrease quantity">-</button>'
+      + '<span>' + item.quantity + '</span>'
+      + '<button class="qty-btn" data-action="inc" data-idx="' + idx + '" aria-label="Increase quantity">+</button>'
+      + '</div>'
+      + '<button class="cart-item-remove" data-idx="' + idx + '">Remove</button>'
+      + '</div>'
+      + '<div style="font-weight:700; font-family:var(--font-mono);">' + money(item.price * item.quantity) + '</div>'
+      + '</div>';
+  }).join('');
+
+  var subtotal = cartSubtotal();
+  var tax = subtotal * TAX_RATE;
+  var shipping = SHIPPING_FLAT;
+  var total = subtotal + tax + shipping;
+
+  wrap.innerHTML =
+    '<div>' + itemsHTML + '</div>'
+    + '<div class="cart-summary">'
+    + '<h3 style="margin-bottom:1.25rem;">Order Summary</h3>'
+    + '<div class="summary-row"><span>Subtotal</span><span>' + money(subtotal) + '</span></div>'
+    + '<div class="summary-row"><span>Estimated Tax</span><span>' + money(tax) + '</span></div>'
+    + '<div class="summary-row"><span>Shipping</span><span>' + money(shipping) + '</span></div>'
+    + '<div class="summary-row total"><span>Total</span><span>' + money(total) + '</span></div>'
+    + '<a href="/checkout" class="btn btn-primary btn-block mt-lg">Proceed to Checkout</a>'
+    + '<a href="/products" class="btn btn-outline btn-block mt-lg">Continue Shopping</a>'
+    + '</div>';
+
+  wrap.querySelectorAll('.qty-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var idx = parseInt(btn.getAttribute('data-idx'), 10);
+      var action = btn.getAttribute('data-action');
+      var items = getCart();
+      var newQty = items[idx].quantity + (action === 'inc' ? 1 : -1);
+      updateCartQuantity(idx, newQty);
+      renderCart();
+    });
+  });
+
+  wrap.querySelectorAll('.cart-item-remove').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var idx = parseInt(btn.getAttribute('data-idx'), 10);
+      removeFromCart(idx);
+      renderCart();
+    });
+  });
+}
+
+renderCart();
+</script>
+</body>
+</html>
