@@ -16,12 +16,31 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const ADMIN_PATH = process.env.ADMIN_PATH || '/admin-suite';
 
-// Validate required env vars
-const requiredEnvVars = ['JWT_SECRET', 'SENDGRID_API_KEY'];
+// ── CATCH SILENT CRASHES ────────────────────────────────────────
+// Without these, an uncaught error or rejected promise anywhere in the
+// app can crash the process with no explanation in the Render logs.
+process.on('uncaughtException', (err) => {
+  console.error('[FATAL] Uncaught exception:', err);
+  process.exit(1);
+});
+process.on('unhandledRejection', (reason) => {
+  console.error('[FATAL] Unhandled promise rejection:', reason);
+  process.exit(1);
+});
+
+// ── Validate required env vars ──────────────────────────────────
+// Fails fast with a clear message instead of crashing deep inside
+// some unrelated route the first time it's hit.
+const requiredEnvVars = ['JWT_SECRET', 'SENDGRID_API_KEY', 'ADMIN_EMAIL', 'ADMIN_PASSWORD'];
 const missingVars = requiredEnvVars.filter(v => !process.env[v]);
 if (missingVars.length > 0) {
   console.error(`[BOOT] Missing required env vars: ${missingVars.join(', ')}`);
-  console.error('[BOOT] Please set these in .env.local or environment');
+  console.error('[BOOT] Set these in your .env file locally, or in your Render');
+  console.error('[BOOT] dashboard under Settings → Environment for production.');
+  process.exit(1);
+}
+if (process.env.JWT_SECRET.length < 32) {
+  console.error('[BOOT] JWT_SECRET must be at least 32 characters long.');
   process.exit(1);
 }
 
@@ -105,8 +124,19 @@ const formLimiter = rateLimit({
   message: { error: 'Too many submissions. Please wait before trying again.' }
 });
 
+// Login-specific limiter — prevents brute-forcing the admin password.
+// Keeps the generous global limiter above for everything else.
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 8,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many login attempts. Please try again later.' }
+});
+
 app.use('/api/orders', formLimiter);
 app.use('/api/contact', formLimiter);
+app.use('/admin/api/login', loginLimiter);
 
 // ── STATIC FILES ──────────────────────────────────────────────
 app.use(express.static(path.join(__dirname, 'public'), {
@@ -168,9 +198,10 @@ initializeDatabase()
     app.listen(PORT, () => {
       console.log(`\n════════════════════════════════════════════════════`);
       console.log(`✓ Smokeyz BBQ Server Running`);
-      console.log(`✓ URL: http://localhost:${PORT}`);
-      console.log(`✓ Admin: http://localhost:${PORT}${ADMIN_PATH}`);
+      console.log(`✓ PORT: ${PORT}`);
+      console.log(`✓ Admin path: ${ADMIN_PATH}`);
       console.log(`✓ Environment: ${process.env.NODE_ENV || 'development'}`);
+      console.log(`✓ Database: ${process.env.DATABASE_URL || '(default path)'}`);
       console.log(`════════════════════════════════════════════════════\n`);
     });
   })
