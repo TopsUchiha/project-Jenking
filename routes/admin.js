@@ -16,9 +16,13 @@ import { requireAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Adjust if your public/static folder lives somewhere else relative to this file.
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const UPLOAD_DIR = path.join(__dirname, '../public/images/products');
+
+// Uploaded images must live on the persistent disk (mounted at /data on Render),
+// NOT inside /public — the app's code directory is wiped and replaced on every
+// deploy, but the mounted disk survives deploys/restarts. Locally (no disk
+// mounted), this falls back to a folder in the project root so dev still works.
+const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(__dirname, '../uploads/products');
 const MAX_IMAGE_WIDTH = 1600; // plenty for a card shown at ~400-600px, even on retina displays
 const JPEG_QUALITY = 82;      // visually near-lossless, dramatically smaller than a raw phone photo
 const ALLOWED_IMAGE_TYPES = { 'jpeg': 'jpg', 'jpg': 'jpg', 'png': 'png', 'gif': 'gif', 'webp': 'webp' };
@@ -179,7 +183,7 @@ router.post('/upload', requireAuth, async (req, res) => {
 
     await fs.writeFile(destPath, outputBuffer);
 
-    const url = `/images/products/${safeName}`;
+    const url = `/uploads/products/${safeName}`;
     res.json({
       success: true,
       url,

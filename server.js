@@ -144,6 +144,15 @@ app.use(express.static(path.join(__dirname, 'public'), {
   maxAge: process.env.NODE_ENV === 'production' ? '1d' : '0'
 }));
 
+// Uploaded product images — served from the persistent disk (set UPLOAD_DIR
+// to something like /data/uploads/products on Render), so they survive
+// deploys instead of living inside the app's code folder. Must match the
+// UPLOAD_DIR used in routes/admin.js.
+const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(__dirname, 'uploads/products');
+app.use('/uploads/products', express.static(UPLOAD_DIR, {
+  maxAge: process.env.NODE_ENV === 'production' ? '1d' : '0'
+}));
+
 // ── API ROUTES ────────────────────────────────────────────────
 app.use('/api', apiRoutes);
 app.use('/admin/api', adminRoutes);
