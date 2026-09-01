@@ -32,7 +32,7 @@
     "jsonwebtoken": "^9.0.2",
     "paypal-rest-sdk": "^1.8.1",
     "sharp": "^0.35.4",
-    "sqlite3": "^6.0.1",
+    "sqlite3": "^5.1.7",
     "stripe": "^14.7.0"
   },
   "devDependencies": {
